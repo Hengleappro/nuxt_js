@@ -119,6 +119,15 @@ async function deleteOrder(orderId: number) {
     } else {
       // Remove the deleted order from the local data
       orders.value = orders.value.filter(order => order.id !== orderId);
+      
+      // Refetch orders to refresh the table
+      await fetchOrders();
+
+      // Adjust current page if necessary
+      if (orders.value.length === 0 && currentPage.value > 1) {
+        currentPage.value -= 1;
+        await fetchOrders();
+      }
     }
   } catch (error) {
     console.log('Caught Error:', error);
