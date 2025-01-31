@@ -12,12 +12,15 @@
 const email = ref();
 const password = ref();
 
+// ============================ cockieStorage ============================= 
 function saveStorage() {
   // localStorage.setItem('username', 'brotherly');
   // localStorage.setItem('password', 'password');
   useCookie('email').value = 'leap';
   useCookie('password').value = '1111';
 }
+
+// ============================ localStorage ============================= 
 // function getData() {
 //   // email.value = localStorage.getItem('email');
 //   // password.value = localStorage.getItem('password');

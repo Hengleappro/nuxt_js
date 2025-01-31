@@ -23,7 +23,7 @@
               </thead>
               <tbody>
                 <tr v-for="(order, index) in orders" :key="order.id" class="bg-gray-100 border-b">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ index + 1 }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ (currentPage - 1) * limit + index + 1 }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.name }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.address }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.price }}</td>
@@ -61,7 +61,7 @@ const supabase = useSupabaseClient();
 const orderFormModal = ref(null);
 const selectedOrder = ref(null);
 const isConfirmOpen = ref(false);
-let orderToDelete = null;
+let orderToDelete: { id: number; } | null = null;
 const currentPage = ref(1);
 const limit = ref(5);
 const totalCount = ref(0);
@@ -85,7 +85,7 @@ const fetchOrders = async () => {
 };
 
 // Handle page change
-function handlePageChange(page) {
+function handlePageChange(page: number) {
   currentPage.value = page;
   fetchOrders();
 }
@@ -99,7 +99,7 @@ function openOrderFormModal() {
 }
 
 // function edit
-async function onEdit(order) {
+async function onEdit(order: null) {
   selectedOrder.value = order;
   await nextTick(); // Wait for the DOM to update
   openOrderFormModal();
@@ -125,10 +125,11 @@ async function deleteOrder(orderId: number) {
   }
 }
 
-function onDelete(order) {
+function onDelete(order: { id: number; } | null) {
   orderToDelete = order;
   isConfirmOpen.value = true;
 }
+
 // =========================================  Handle =========================================
 // Handle modal close
 function handleModalClose(value: 'yes' | 'no') {
