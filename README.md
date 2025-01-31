@@ -2,6 +2,24 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+
+<!-- ========= install supabase ========
+npm install @supabase/supabase-js
+npm audit
+-edit .env
+SUPABASE_URL="replace url"
+SUPABASE_KEY="supabase key"
+
+
+# install icon
+npx nuxi module add icon
+
+# nuxt js
+npx nuxi@latest init <project-name>
+cd <project-name>
+npm run dev -- -o
+npm install -->
+
 ## Setup
 
 Make sure to install dependencies:

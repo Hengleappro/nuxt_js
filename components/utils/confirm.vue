@@ -14,21 +14,21 @@
           </svg>
         </button>
       </div>
-
       <div class="p-6 pt-0 text-center">
-        <Icon name="icon-park-outline:people-left" class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"/>
+        <Icon name="icon-park-outline:people-left" class="w-20 h-20 text-red-600 mx-auto" fill="none"
+          stroke="currentColor" viewBox="0 0 24 24" />
         <h3 class="text-xl font-normal text-gray-600 mt-5 mb-6">Are you sure you want to Logout?</h3>
         <a href="#" @click="closeModal('yes')"
-          class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+          class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
           Yes, I'm sure
         </a>
         <a href="#" @click="closeModal('no')"
-          class="text-gray-900 bg-white hover:bg-gray-300 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
+          class="text-gray-900 bg-red hover:bg-red-700 focus:ring-4 focus:ring-red-400 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
           data-modal-toggle="delete-user-modal">
           No, cancel
         </a>
       </div>
-          
+
     </div>
   </div>
 </template>
@@ -49,14 +49,4 @@ defineExpose({
   openModal
 })
 
-
-// const emit = defineEmits(['confirm']);
-// const props = defineProps(['isOpen']);
-
-// function closeModal(value: 'yes' | 'no') {
-//   emit('confirm', value);
-// }
-// defineExpose({
-//   openModal
-// })
 </script>
