@@ -27,10 +27,11 @@
       </div>
     </div>
   </div>
+  <UtilsLoading v-if="loading" />
 </template>
 
 <script setup lang="ts">
-
+const loading = ref(false);
 const emit = defineEmits(['confirm']);
 const props = defineProps(['isOpen']);
 

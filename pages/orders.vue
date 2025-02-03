@@ -23,7 +23,8 @@
               </thead>
               <tbody>
                 <tr v-for="(order, index) in orders" :key="order.id" class="bg-gray-100 border-b">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ (currentPage - 1) * limit + index + 1 }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ (currentPage - 1) * limit
+                    + index + 1 }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.name }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.address }}</td>
                   <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">{{ order.price }}</td>
@@ -50,8 +51,8 @@
     </div>
   </div>
   <!-- Pass currentPage, totalPages, and handle next/prev events -->
-  <UtilsPagination :currentPage="currentPage" :totalCount="totalCount" :limit="limit"
-    @pageChange="handlePageChange" />
+  <UtilsPagination :currentPage="currentPage" :totalCount="totalCount" :limit="limit" @pageChange="handlePageChange" />
+  <UtilsLoading v-if="loading" />
 </template>
 
 <script lang="ts" setup>
@@ -65,6 +66,7 @@ let orderToDelete: { id: number; } | null = null;
 const currentPage = ref(1);
 const limit = ref(5);
 const totalCount = ref(0);
+const loading = ref(false);
 
 
 // ========================================= Fetch orders from Supabase with pagination =========================================
@@ -119,7 +121,7 @@ async function deleteOrder(orderId: number) {
     } else {
       // Remove the deleted order from the local data
       orders.value = orders.value.filter(order => order.id !== orderId);
-      
+
       // Refetch orders to refresh the table
       await fetchOrders();
 

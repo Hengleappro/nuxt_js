@@ -31,11 +31,12 @@
          </div>
       </div>
    </section>
-
+   <UtilsLoading v-if="loading" />
 </template>
 
 
 <script setup>
+   const loading = ref(false);
 
 const tables = [
    {
