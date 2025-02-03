@@ -110,32 +110,55 @@ function clearData() {
 
 const handleSubmit = async () => {
   try {
+    // Ensure price is a number if required
+    const priceValue = parseFloat(formData.price);
+    if (isNaN(priceValue)) {
+      alert('Price must be a number.');
+      return;
+    }
+
+    // Log formData for debugging
+    console.log('Submitting:', formData);
+
+    let error;
     if (isEditMode.value && formData.id) {
       // Update existing order
-      const { error } = await supabase
+      ({ error } = await supabase
         .from('orders')
         .update({
           name: formData.name,
           address: formData.address,
-          price: formData.price,
+          price: priceValue, // Ensure it's stored as a number
           city: formData.city,
           zip_code: formData.zip_code,
         })
-        .eq('id', formData.id);
-      if (error) throw error;
-      alert('Order successfully updated!');
+        .eq('id', formData.id));
     } else {
       // Insert new order
-      const { error } = await supabase
+      ({ error } = await supabase
         .from('orders')
-        .insert([{ name: formData.name, address: formData.address, price: formData.price, city: formData.city, zip_code: formData.zip_code }]);
-      if (error) throw error;
-      alert('Order successfully inserted!');
+        .insert([{
+          name: formData.name,
+          address: formData.address,
+          price: priceValue,
+          city: formData.city,
+          zip_code: formData.zip_code,
+        }]));
     }
+
+    if (error) {
+      console.error('Supabase error:', error);
+      alert(`Failed to process the order: ${error.message}`);
+      return;
+    }
+
+    alert(isEditMode.value ? 'Order successfully updated!' : 'Order successfully inserted!');
     clearData();
     closeModal('yes');
   } catch (error) {
+    console.error('Unexpected error:', error);
     alert('Failed to process the order. Please try again.');
   }
 };
+
 </script>
