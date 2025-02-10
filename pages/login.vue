@@ -1,7 +1,6 @@
-
 <template>
-	<div class="flex font-poppins items-center justify-center">
-		<div class="h-screen w-screen flex justify-center items-center dark:bg-gray-900">
+	<div class="flex font-poppins items-center justify-center ">
+		<div class="h-screen w-screen flex justify-center items-center dark bg-gray-900">
 			<div class="grid gap-8">
 				<div id="back-div" class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4">
 					<div
@@ -85,20 +84,25 @@
 						<div class="text-gray-500 flex text-center flex-col mt-4 items-center text-sm">
 							<p class="cursor-default">
 								By signing in, you agree to our
-								<a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#">
+							<p class="dark:text-gray-300">
+								Don't have an account?
+								<NuxtLink to="/signup"
+									class="group text-blue-400 transition-all duration-100 ease-in-out">
 									<span
-										class="cursor-pointer bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-										Terms
+										class="bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+										Sign Up
 									</span>
-								</a>
-								and
-								<a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#">
-									<span
-										class="cursor-pointer bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-										Privacy Policy
-									</span>
-								</a>
+								</NuxtLink>
 							</p>
+							and
+							<a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#">
+								<span
+									class="cursor-pointer bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+									Privacy Policy
+								</span>
+							</a>
+							</p>
+
 						</div>
 					</div>
 				</div>
@@ -148,8 +152,17 @@ function clearData() {
 	password.value = '';
 }
 
-onMounted(() => {
+import { useColorMode } from '@vueuse/core'
+import { onMounted, onUnmounted } from 'vue'
 
-});
+const colorMode = useColorMode()
+
+onMounted(() => {
+	document.documentElement.classList.add('dark') // Enable dark mode only here
+})
+
+onUnmounted(() => {
+	document.documentElement.classList.remove('dark') // Remove when leaving login
+})
 
 </script>

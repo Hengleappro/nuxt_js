@@ -1,13 +1,15 @@
 <template>
-  <div class="flex items-center justify-between p-4">
+
+  
+  <div class="flex items-center justify-between p-4 ">
     <button @click="prevPage" :disabled="currentPage === 1"
-      class="px-3 py-1 bg-gray-200 rounded hover:bg-blue-500 cursor-pointer">
+      class="px-3 py-1 bg-blue-200 rounded hover:bg-blue-500 cursor-pointer shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f]">
       <icon name="mdi:arrow-left-bold" />
       Previous
     </button>
-    <span class="text-sm text-gray-700 dark:text-gray-400">Page {{ currentPage }} of {{ totalPages }}</span>
+    <span class="text-sm text-gray-700 dark:text-gray-400 ">Page {{ currentPage }} of {{ totalPages }}</span>
     <button @click="nextPage" :disabled="currentPage === totalPages"
-      class="px-3 py-1 bg-blue-200 rounded shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] hover:bg-blue-500">
+      class="px-3 py-1 bg-blue-200 rounded shadow-[0_0_2px_#fff,inset_0_0_2px_#fff,0_0_5px_#08f,0_0_15px_#08f,0_0_30px_#08f] hover:bg-blue-500 cursor-pointer ">
       Next
       <icon name="mdi:arrow-right-bold" />
     </button>
@@ -16,6 +18,8 @@
 </template>
 
 <script lang="ts" setup>
+
+
 const props = defineProps({
   currentPage: {
     type: Number,

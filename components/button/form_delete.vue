@@ -2,8 +2,8 @@
   <div id="modelConfirm" v-if="isOpen"
     class="fixed z-50 inset-0 bg-gray-500 bg-opacity-10 overflow-y-auto h-full w-full px-4">
     <div class="relative top-40 mx-auto shadow-xl rounded-md bg-white max-w-md">
-      <div class="flex justify-end p-2" @click="closeModal('no')">
-        <button onclick="closeModal('modelConfirm')" type="button"
+      <div class="flex justify-end p-2">
+        <button @click="closeModal('no')" type="button"
           class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd"
@@ -12,31 +12,50 @@
           </svg>
         </button>
       </div>
-      <div class="p-6 pt-0 text-center ">
-        <Icon name="gridicons:trash" class="w-20 h-20  mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" />
-        <h3 class="text-xl font-normal text-gray-600 mt-5 mb-6">Are you sure you want to Delete?</h3>
-        <a href="#" @click="closeModal('yes')"
+      <div class="p-6 pt-0 text-center">
+        <Icon name="gridicons:trash" class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" />
+        <h3 class="text-xl font-normal text-gray-600 mt-5 mb-6">Are you sure you want to delete?</h3>
+        <button @click="confirmDelete"
           class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
           Delete
-        </a>
-        <a href="#" @click="closeModal('no')"
-          class="text-gray-900 bg-white hover:bg-gray-300 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
-          data-modal-toggle="delete-user-modal">
+        </button>
+        <button @click="closeModal('no')"
+          class="text-gray-900 bg-white hover:bg-gray-300 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center">
           No, cancel
-        </a>
+        </button>
       </div>
     </div>
   </div>
+  <!-- Loading Indicator -->
   <UtilsLoading v-if="loading" />
 </template>
 
 <script setup lang="ts">
-const loading = ref(false);
+import { ref } from 'vue';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 const emit = defineEmits(['confirm']);
-const props = defineProps(['isOpen']);
+const props = defineProps({ isOpen: Boolean });
+
+const loading = ref(false);
+const showAlert = ref(false);
+const alertMessage = ref('');
+const alertDescription = ref('');
 
 function closeModal(value: 'yes' | 'no') {
   emit('confirm', value);
 }
 
+function confirmDelete() {
+  // Simulate delete success
+  showAlert.value = true;
+  alertMessage.value = 'Order successfully deleted!';
+  alertDescription.value = 'The order has been removed from the system.';
+
+  setTimeout(() => {
+    showAlert.value = false;
+  }, 5000); // Hide alert after 5 seconds
+
+  closeModal('yes');
+}
 </script>

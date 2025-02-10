@@ -5,6 +5,11 @@
       <Icon name="gridicons:plus" class="text-lg" />
     </button>
     <ButtonFormAdd :selected="selectedOrder" ref="orderFormModal" @close="handleModalClose" />
+    <!-- Success Alert -->
+    <Alert v-if="showAlert">
+      <AlertTitle>{{ alertMessage }}</AlertTitle>
+      <AlertDescription>{{ alertDescription }}</AlertDescription>
+    </Alert>
     <div class="flex flex-col mt-4">
       <div class="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
         <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -57,6 +62,7 @@
 
 <script lang="ts" setup>
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 const orders = ref([]);
 const supabase = useSupabaseClient();
 const orderFormModal = ref(null);
@@ -67,7 +73,9 @@ const currentPage = ref(1);
 const limit = ref(5);
 const totalCount = ref(0);
 const loading = ref(false);
-
+const showAlert = ref(false);
+const alertMessage = ref('');
+const alertDescription = ref('');
 
 // ========================================= Fetch orders from Supabase with pagination =========================================
 
@@ -95,10 +103,12 @@ function handlePageChange(page: number) {
 // ========================================= Open the order form modal =========================================
 
 function openOrderFormModal() {
+  selectedOrder.value = null;
   if (orderFormModal.value) {
-    orderFormModal.value.openModal();
+    orderFormModal.value.openModal();  // Open modal to add a new order
   }
 }
+
 
 // function edit
 async function onEdit(order: null) {
@@ -154,6 +164,15 @@ function handleConfirm(value: 'yes' | 'no') {
   isConfirmOpen.value = false;
   if (value === 'yes' && orderToDelete) {
     deleteOrder(orderToDelete.id);
+    // Simulate delete success
+    showAlert.value = true;
+    alertMessage.value = 'Order successfully deleted!';
+    alertDescription.value = 'The order has been removed from the system.';
+
+    setTimeout(() => {
+      showAlert.value = false;
+    }, 5000); // Hide alert after 5 seconds
+
   }
   orderToDelete = null;
 }

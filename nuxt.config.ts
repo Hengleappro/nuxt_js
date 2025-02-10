@@ -5,6 +5,24 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/supabase',
     '@nuxt/icon',
-    '@nuxtjs/tailwindcss'
-  ]
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/color-mode',
+    'shadcn-nuxt'
+  ],
+  // colorMode: {
+  //   classSuffix: '',
+  //   preference: 'dark', // Set default to dark
+  //   fallback: 'dark', // Fallback to dark if no preference is set
+  // },
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui'
+  }
 })

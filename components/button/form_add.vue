@@ -16,16 +16,16 @@
                   id="name" type="text">
               </label>
               <label class="block mb-2 text-sm font-medium text-gray-900">
+                Address
+                <input required v-model="formData.address" placeholder="address"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+                id="address" type="text">
+              </label>
+              <label class="block mb-2 text-sm font-medium text-gray-900">
                 Price
                 <input required v-model="formData.price" placeholder="price"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                   id="price" type="text">
-              </label>
-              <label class="block mb-2 text-sm font-medium text-gray-900">
-                Address
-                <input required v-model="formData.address" placeholder="address"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                  id="address" type="text">
               </label>
               <label class="block mb-2 text-sm font-medium text-gray-900">
                 City
@@ -55,16 +55,29 @@
       </div>
     </form>
   </div>
+  <Alert v-if="showAlert">
+    <AlertTitle>{{ alertMessage }}</AlertTitle>
+    <AlertDescription>
+      {{ alertDescription }}
+    </AlertDescription>
+  </Alert>
+
   <UtilsLoading v-if="loading" />
 </template>
 
 <script lang="ts" setup>
+import { ref, reactive, nextTick } from 'vue';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 const emit = defineEmits(['close']);
 const props = defineProps(['selected']);
 const loading = ref(false);
 const supabase = useSupabaseClient();
 const isOpen = ref(false);
 const isEditMode = ref(false);
+const showAlert = ref(false);
+const alertMessage = ref('');
+const alertDescription = ref('');
+
 const formData = reactive({
   id: null,
   name: '',
@@ -73,6 +86,15 @@ const formData = reactive({
   city: '',
   zip_code: ''
 });
+
+function clearData() {
+  formData.id = null;
+  formData.name = '';
+  formData.address = '';
+  formData.price = '';
+  formData.city = '';
+  formData.zip_code = '';
+}
 
 function openModal() {
   if (props.selected) {
@@ -99,42 +121,27 @@ defineExpose({
   openModal
 });
 
-function clearData() {
-  formData.id = null;
-  formData.name = '';
-  formData.address = '';
-  formData.price = '';
-  formData.city = '';
-  formData.zip_code = '';
-}
-
 const handleSubmit = async () => {
   try {
-    // Ensure price is a number if required
     const priceValue = parseFloat(formData.price);
     if (isNaN(priceValue)) {
       alert('Price must be a number.');
       return;
     }
 
-    // Log formData for debugging
-    console.log('Submitting:', formData);
-
     let error;
     if (isEditMode.value && formData.id) {
-      // Update existing order
       ({ error } = await supabase
         .from('orders')
         .update({
-          name: formData.name,
+          name: formData.name ,
           address: formData.address,
-          price: priceValue, // Ensure it's stored as a number
+          price: priceValue,
           city: formData.city,
           zip_code: formData.zip_code,
         })
         .eq('id', formData.id));
     } else {
-      // Insert new order
       ({ error } = await supabase
         .from('orders')
         .insert([{
@@ -143,7 +150,7 @@ const handleSubmit = async () => {
           price: priceValue,
           city: formData.city,
           zip_code: formData.zip_code,
-        }]));
+        }]));  
     }
 
     if (error) {
@@ -152,13 +159,18 @@ const handleSubmit = async () => {
       return;
     }
 
-    alert(isEditMode.value ? 'Order successfully updated!' : 'Order successfully inserted!');
-    clearData();
+    alertMessage.value = isEditMode.value ? 'Order successfully updated!' : 'Order successfully inserted!';
+    alertDescription.value = 'The order has been processed successfully.';
+    showAlert.value = true;
+
+    setTimeout(() => {
+      showAlert.value = false;
+    }, 5000); // Hide alert after 5 seconds
     closeModal('yes');
+    clearData();
   } catch (error) {
     console.error('Unexpected error:', error);
     alert('Failed to process the order. Please try again.');
   }
 };
-
 </script>
